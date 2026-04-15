@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cinema Chai – Seat Booking</title>
+    <title>Chai Cinema – Seat Booking</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap");
@@ -46,9 +46,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 4rem;
+        gap: 25rem;
         width: 100%;
-        max-width: 900px;
+        max-width: 1200px;
       }
 
       /* ─── LEFT TAGLINE PANEL ──────────────────────────── */
@@ -541,16 +541,17 @@
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
               "
-              >Cinema Chai</span
+              >Chai Cinema</span
             >
           </div>
 
           <div class="tagline-divider"></div>
 
           <h1 class="tagline-heading">
-            <span class="highlight">Cinema Chai</span> mein aaiye<br />
-            Ek haath mein chai ki chuski,<br />
-            doosre mein popcorn ki masti…<br />
+            <span class="highlight">Cinema Chai</span> me aai<br />
+            ye chai ki chuski ke<br />
+            sath movie ka<br />
+            <span class="highlight">lab uthai</span> ye
           </h1>
 
           <p class="tagline-sub">
@@ -658,7 +659,7 @@
                 stroke-linecap="round"
               />
             </svg>
-            <span class="logo-text">Cinema Chai</span>
+            <span class="logo-text">Chai Cinema</span>
           </div>
 
           <!-- Now showing pill -->
@@ -720,7 +721,7 @@
           </div>
 
           <!-- Register Form -->
-          <div id="form-register" style="display: none">
+          <div id="form-register">
             <div class="form-group">
               <label class="form-label">Full Name</label>
               <input
@@ -731,15 +732,16 @@
               />
             </div>
             <div class="form-group">
-              <label class="form-label">Username</label>
+              <label class="form-label">Gmail</label>
               <input
                 class="form-input"
-                id="reg-user"
-                type="text"
-                placeholder="Choose a username"
+                id="reg-email"
+                type="email"
+                placeholder="Enter your Gmail address"
+                autocomplete="email"
               />
-              <p class="form-error" id="reg-user-error">
-                Username already taken.
+              <p class="form-error" id="reg-email-error">
+                Gmail already registered.
               </p>
             </div>
             <div class="form-group">
@@ -778,7 +780,7 @@
               margin-bottom: 0;
             "
           >
-            Cinema Chai&copy; 2025 &nbsp;·&nbsp; ChaiCode
+            Chai Cinema &copy; 2025 &nbsp;·&nbsp; ChaiCode
           </p>
         </div>
       </div>
@@ -806,7 +808,7 @@
             />
           </svg>
           <span style="font-weight: 600; font-size: 0.95rem; color: #fbbf24"
-            >Cinema Chai</span
+            >Chai Cinema</span
           >
         </div>
         <div class="user-badge">
@@ -859,10 +861,17 @@
 
       /* ─── TAB SWITCH ─────────────────────────────────── */
       function switchTab(tab) {
-        document.getElementById("form-login").style.display =
-          tab === "login" ? "" : "none";
-        document.getElementById("form-register").style.display =
-          tab === "register" ? "" : "none";
+        const loginForm = document.getElementById("form-login");
+        const registerForm = document.getElementById("form-register");
+        if (tab === "login") {
+          loginForm.style.display = "";
+          registerForm.style.display = "none";
+          window.history.pushState({}, "", "/login");
+        } else {
+          loginForm.style.display = "none";
+          registerForm.style.display = "";
+          window.history.pushState({}, "", "/register");
+        }
         document
           .getElementById("tab-login")
           .classList.toggle("active", tab === "login");
@@ -870,7 +879,7 @@
           .getElementById("tab-register")
           .classList.toggle("active", tab === "register");
         document.getElementById("login-error").classList.remove("show");
-        document.getElementById("reg-user-error").classList.remove("show");
+        document.getElementById("reg-email-error").classList.remove("show");
         document.getElementById("reg-pass-error").classList.remove("show");
       }
 
@@ -892,15 +901,18 @@
       /* ─── REGISTER ───────────────────────────────────── */
       function handleRegister() {
         const name = document.getElementById("reg-name").value.trim();
-        const uname = document.getElementById("reg-user").value.trim();
+        const email = document
+          .getElementById("reg-email")
+          .value.trim()
+          .toLowerCase();
         const pass = document.getElementById("reg-pass").value;
         const pass2 = document.getElementById("reg-pass2").value;
 
-        document.getElementById("reg-user-error").classList.remove("show");
+        document.getElementById("reg-email-error").classList.remove("show");
         document.getElementById("reg-pass-error").classList.remove("show");
 
-        if (users.find((u) => u.username === uname)) {
-          document.getElementById("reg-user-error").classList.add("show");
+        if (users.find((u) => u.username === email)) {
+          document.getElementById("reg-email-error").classList.add("show");
           return;
         }
         if (pass !== pass2 || pass.length < 1) {
@@ -909,8 +921,8 @@
         }
 
         const newUser = {
-          name: name || uname,
-          username: uname,
+          name: name || email,
+          username: email,
           password: pass,
         };
         users.push(newUser);
@@ -923,27 +935,64 @@
         enterBooking("Guest");
       }
 
-      /* ─── TRANSITION TO BOOKING ──────────────────────── */
+      /* ─── TRANSITION TO BOOKING ─────────────────────── */
       function enterBooking(name) {
         currentUser = name;
+        localStorage.setItem("cc_current_user", name);
         document.getElementById("user-greeting").textContent = name;
         document.getElementById("user-avatar").textContent = name
           .charAt(0)
           .toUpperCase();
         document.getElementById("auth-screen").style.display = "none";
         document.getElementById("booking-screen").style.display = "block";
+        window.history.pushState({}, "", "/booking");
         run();
+      }
+
+      function initRouting() {
+        const path = window.location.pathname;
+        const savedUser = localStorage.getItem("cc_current_user");
+
+        if (savedUser) {
+          currentUser = savedUser;
+          document.getElementById("user-greeting").textContent = savedUser;
+          document.getElementById("user-avatar").textContent = savedUser
+            .charAt(0)
+            .toUpperCase();
+          document.getElementById("auth-screen").style.display = "none";
+          document.getElementById("booking-screen").style.display = "block";
+          window.history.replaceState({}, "", "/booking");
+          run();
+          return;
+        }
+
+        if (path === "/booking") {
+          window.location.href = "/login";
+          return;
+        }
+
+        if (path === "/register") {
+          document.getElementById("auth-screen").style.display = "flex";
+          document.getElementById("booking-screen").style.display = "none";
+          switchTab("register");
+        } else {
+          document.getElementById("auth-screen").style.display = "flex";
+          document.getElementById("booking-screen").style.display = "none";
+          switchTab("login");
+        }
       }
 
       /* ─── LOGOUT ─────────────────────────────────────── */
       function handleLogout() {
         currentUser = null;
+        localStorage.removeItem("cc_current_user");
         document.getElementById("tbl").innerHTML = "";
         document.getElementById("auth-screen").style.display = "flex";
         document.getElementById("booking-screen").style.display = "none";
         document.getElementById("login-user").value = "";
         document.getElementById("login-pass").value = "";
         switchTab("login");
+        window.location.href = "/login";
       }
 
       /* ─── SEAT GRID (original logic, restyled) ───────── */
@@ -1026,11 +1075,11 @@
 
             try {
               const id = j[i].id;
-              let name =
-                currentUser === "Guest"
-                  ? prompt("Enter your name for booking:")
-                  : currentUser;
-              if (!name) return;
+              const name = currentUser;
+              if (!name) {
+                alert("Please log in first to book a seat.");
+                return;
+              }
 
               const res = await fetch(`/${id}/${name}`, { method: "PUT" });
               const data = await res.json();
@@ -1039,17 +1088,41 @@
                 alert("Couldn't book – seat already taken!");
               } else {
                 alert(`Seat ${id} booked for ${name}! Enjoy the movie 🎬`);
+                currentTd.className = `${base} cursor-not-allowed`;
                 currentTd.style.cssText = `
-                  background: rgba(239,68,68,0.07);
-                  border: 1px solid rgba(239,68,68,0.2);
-                  color: rgba(239,68,68,0.45);
+                  background: rgba(220, 38, 38, 0.22);
+                  border: 1px solid rgba(248, 113, 113, 0.35);
+                  color: #f8fafc;
                   width: 52px; height: 52px;
                   font-size: 0.8rem; cursor: not-allowed;
                   border-radius: 10px; text-align: center;
                   vertical-align: middle; font-weight: 700;
                   font-family: Outfit, sans-serif; position: relative;
+                  overflow: visible;
                 `;
-                currentTd.textContent = id;
+                currentTd.innerHTML = `
+                  <span>${id}</span>
+                  <div style="
+                    position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%);
+                    padding:6px 12px; background:#0f172a; border:1px solid rgba(251,191,36,0.2);
+                    font-size:0.75rem; color:#94a3b8; border-radius:8px;
+                    opacity:0; pointer-events:none; white-space:nowrap; z-index:999;
+                    transition:opacity 0.2s; font-weight:400;
+                  " class="seat-tip">
+                    Booked by <strong style="color:#fbbf24;">${name}</strong>
+                  </div>
+                `;
+                currentTd.addEventListener(
+                  "mouseenter",
+                  () =>
+                    (currentTd.querySelector(".seat-tip").style.opacity = "1"),
+                );
+                currentTd.addEventListener(
+                  "mouseleave",
+                  () =>
+                    (currentTd.querySelector(".seat-tip").style.opacity = "0"),
+                );
+                await run();
               }
             } catch (ex) {
               alert("Error booking: " + ex);
@@ -1060,6 +1133,7 @@
           tbl.appendChild(tr);
         }
       }
+      initRouting();
     </script>
   </body>
 </html>

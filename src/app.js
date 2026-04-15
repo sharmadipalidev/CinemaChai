@@ -29,6 +29,18 @@ app.use(cookieParser());
 app.use(express.static(path.resolve(__dirname, "../public")));
 
 app.get("/", (req, res) => {
+  res.redirect("/login");
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../public/index.html"));
+});
+
+app.get("/register", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../public/index.html"));
+});
+
+app.get("/booking", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../public/index.html"));
 });
 
