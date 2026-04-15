@@ -3,139 +3,1063 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stellar Seat Booking</title>
+    <title>Cinema Chai – Seat Booking</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap");
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         font-family: "Outfit", sans-serif;
-        background-color: #0f172a;
+        background-color: #0a0f1e;
         color: #f8fafc;
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      /* ─── AUTH SCREEN ─────────────────────────────────── */
+      #auth-screen {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        background:
+          radial-gradient(
+            ellipse 60% 50% at 30% 0%,
+            rgba(251, 191, 36, 0.07) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 50% 40% at 80% 100%,
+            rgba(251, 191, 36, 0.05) 0%,
+            transparent 55%
+          ),
+          #0a0f1e;
+      }
+
+      /* ─── AUTH WRAPPER (two-column) ───────────────────── */
+      .auth-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4rem;
+        width: 100%;
+        max-width: 900px;
+      }
+
+      /* ─── LEFT TAGLINE PANEL ──────────────────────────── */
+      .auth-tagline {
+        flex: 1;
+        max-width: 380px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .tagline-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .tagline-heading {
+        font-size: 2.15rem;
+        font-weight: 700;
+        line-height: 1.35;
+        color: #f8fafc;
+        letter-spacing: -0.5px;
+      }
+
+      .tagline-heading .highlight {
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .tagline-sub {
+        font-size: 0.95rem;
+        color: #64748b;
+        line-height: 1.6;
+      }
+
+      .tagline-divider {
+        width: 48px;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, rgba(251, 191, 36, 0.2));
+        border-radius: 99px;
+      }
+
+      /* Decorative floating cups */
+      .deco-cups {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+      .deco-cup {
+        opacity: 0.18;
+      }
+
+      /* ─── AUTH CARD ───────────────────────────────────── */
+      .auth-card {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(15, 23, 42, 0.95);
+        border: 1px solid rgba(251, 191, 36, 0.2);
+        border-radius: 24px;
+        padding: 2.5rem 2rem;
+        backdrop-filter: blur(20px);
+        box-shadow:
+          0 0 60px rgba(251, 191, 36, 0.06),
+          0 30px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Logo inside card */
+      .chai-logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 1.75rem;
+      }
+      .chai-cup {
+        width: 36px;
+        height: 36px;
+      }
+      .logo-text {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.5px;
+      }
+
+      /* Tabs */
+      .auth-tabs {
+        display: flex;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 4px;
+        margin-bottom: 1.75rem;
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 0.55rem;
+        border: none;
+        border-radius: 9px;
+        font-family: "Outfit", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: transparent;
+        color: #64748b;
+        letter-spacing: 0.2px;
+      }
+      .tab-btn.active {
+        background: rgba(251, 191, 36, 0.12);
+        color: #fbbf24;
+        border: 1px solid rgba(251, 191, 36, 0.25);
+      }
+
+      /* Form */
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #94a3b8;
+        margin-bottom: 0.4rem;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      .form-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: #f1f5f9;
+        font-family: "Outfit", sans-serif;
+        font-size: 0.95rem;
+        outline: none;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s;
+      }
+      .form-input::placeholder {
+        color: #475569;
+      }
+      .form-input:focus {
+        border-color: rgba(251, 191, 36, 0.5);
+        box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.08);
+      }
+
+      /* Auth Button */
+      .auth-btn {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        border: none;
+        border-radius: 11px;
+        color: #1c1008;
+        font-family: "Outfit", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          opacity 0.2s,
+          transform 0.15s;
+        letter-spacing: 0.3px;
+      }
+      .auth-btn:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      .auth-btn:active {
+        transform: scale(0.98);
+      }
+
+      /* Divider */
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 1.25rem 0;
+        color: #334155;
+        font-size: 0.8rem;
+      }
+      .divider::before,
+      .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      /* Social / Guest */
+      .ghost-btn {
+        width: 100%;
+        padding: 0.7rem;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 11px;
+        color: #94a3b8;
+        font-family: "Outfit", sans-serif;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+      .ghost-btn:hover {
+        border-color: rgba(251, 191, 36, 0.3);
+        color: #fbbf24;
+      }
+
+      /* Error */
+      .form-error {
+        font-size: 0.8rem;
+        color: #f87171;
+        margin-top: 0.35rem;
+        display: none;
+      }
+      .form-error.show {
+        display: block;
+      }
+
+      /* Now showing badge */
+      .now-showing {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        padding: 0.6rem 1rem;
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        border-radius: 10px;
+        font-size: 0.8rem;
+        color: #fca5a5;
+        letter-spacing: 0.5px;
+      }
+      .now-showing strong {
+        color: #f87171;
+        font-weight: 600;
+      }
+
+      /* ─── Responsive: hide tagline on small screens ──── */
+      @media (max-width: 768px) {
+        .auth-tagline {
+          display: none;
+        }
+        .auth-wrapper {
+          justify-content: center;
+        }
+      }
+
+      /* ─── BOOKING SCREEN ───────────────────────────────── */
+      #booking-screen {
+        display: none;
+        min-height: 100vh;
+        padding: 1.5rem;
+        background:
+          radial-gradient(
+            ellipse 60% 40% at 50% 0%,
+            rgba(251, 191, 36, 0.05) 0%,
+            transparent 60%
+          ),
+          #0a0f1e;
+      }
+
+      /* Top bar */
+      .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 960px;
+        margin: 0 auto 2rem;
+        padding: 0.75rem 1.25rem;
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(251, 191, 36, 0.15);
+        border-radius: 14px;
+        backdrop-filter: blur(10px);
+      }
+      .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .user-badge {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        color: #94a3b8;
+      }
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+        color: #1c1008;
+      }
+      .logout-btn {
+        padding: 0.4rem 0.9rem;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: #64748b;
+        font-family: "Outfit", sans-serif;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          color 0.2s;
+      }
+      .logout-btn:hover {
+        border-color: rgba(239, 68, 68, 0.4);
+        color: #f87171;
+      }
+
+      /* Main booking card */
+      .booking-card {
+        max-width: 960px;
+        margin: 0 auto;
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(251, 191, 36, 0.12);
+        border-radius: 24px;
+        padding: 2.5rem 2rem;
+        backdrop-filter: blur(20px);
+      }
+
+      .booking-title {
+        text-align: center;
+        margin-bottom: 0.5rem;
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -0.5px;
+      }
+      .movie-title {
+        text-align: center;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #f87171;
+        margin-bottom: 0.3rem;
+      }
+      .movie-subtitle {
+        text-align: center;
+        font-size: 0.85rem;
+        color: #475569;
+        margin-bottom: 2rem;
+      }
+
+      /* Legend */
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        padding: 0.7rem 1.5rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 99px;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.85rem;
+        color: #94a3b8;
+      }
+      .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+      .dot-available {
+        background: #fbbf24;
+        box-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+      }
+      .dot-booked {
+        background: rgba(239, 68, 68, 0.2);
+        border: 1px solid rgba(239, 68, 68, 0.4);
+      }
+
+      /* Screen indicator */
+      .screen-bar {
+        width: 60%;
+        max-width: 400px;
+        height: 6px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(251, 191, 36, 0.3),
+          transparent
+        );
+        border-radius: 4px;
+        margin: 0 auto 2rem;
+        position: relative;
+      }
+      .screen-bar::before {
+        content: "SCREEN";
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.65rem;
+        letter-spacing: 3px;
+        color: #475569;
+        font-weight: 500;
+      }
+
+      /* Seat table */
+      #tbl {
+        border-separate: separate;
+        border-spacing: 10px;
+        margin: 0 auto;
+      }
+
+      @media (max-width: 700px) {
+        .booking-card {
+          padding: 1.5rem 1rem;
+        }
+        .auth-card {
+          padding: 2rem 1.25rem;
+        }
       }
     </style>
   </head>
-  <body
-    class="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
-  >
-    <div
-      class="max-w-7xl w-full bg-slate-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-10 border border-slate-700/50"
-    >
-      <div class="text-center mb-10">
-        <h1
-          class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 mb-4 tracking-tight"
-        >
-          ChaiCode Cinema - Now Showing<br />
-          <br />
-          <span class="text-red-400">
-            <span class="font-bold">Dhurandhar The Revenge</span>
-          </span>
-        </h1>
-        <p class="text-slate-400 text-lg">Jassi ko ghar ki yaad kyu nhi aai?</p>
-      </div>
 
-      <div class="flex justify-center mb-10">
-        <div
-          class="bg-slate-900/50 rounded-full px-6 py-3 border border-slate-700 flex gap-8 items-center"
-        >
-          <div class="flex items-center gap-3">
-            <div
-              class="w-4 h-4 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.6)]"
-            ></div>
-            <span class="text-slate-300 font-medium tracking-wide"
-              >Available</span
+  <body>
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  AUTH SCREEN                                       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div id="auth-screen">
+      <div class="auth-wrapper">
+        <!-- ── LEFT: Tagline Panel ── -->
+        <div class="auth-tagline">
+          <div class="tagline-logo">
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 36 36"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7 10h22l-2 16a3 3 0 01-3 2.5H12A3 3 0 019 26L7 10z"
+                fill="rgba(251,191,36,0.15)"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+              />
+              <path
+                d="M27 14h3a3 3 0 010 6h-3"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M11 7c0 0 2-2 5 0s5 0 5 0"
+                stroke="#f59e0b"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                opacity="0.6"
+              />
+              <path
+                d="M14 29.5h8"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span
+              style="
+                font-size: 1.1rem;
+                font-weight: 700;
+                background: linear-gradient(135deg, #fbbf24, #f59e0b);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+              "
+              >Cinema Chai</span
             >
           </div>
-          <div class="w-px h-6 bg-slate-700"></div>
-          <div class="flex items-center gap-3">
-            <div
-              class="w-4 h-4 rounded-full bg-rose-500/20 border border-rose-500/50"
-            ></div>
-            <span class="text-slate-400 font-medium tracking-wide">Booked</span>
+
+          <div class="tagline-divider"></div>
+
+          <h1 class="tagline-heading">
+            <span class="highlight">Cinema Chai</span> mein aaiye<br />
+            Ek haath mein chai ki chuski,<br />
+            doosre mein popcorn ki masti…<br />
+          </h1>
+
+          <p class="tagline-sub">
+            Apni pasandida seat chuniye, chai ka maza lijiye,<br />
+            aur filmon ki duniya me kho jaiye.
+          </p>
+
+          <div class="deco-cups">
+            <svg
+              class="deco-cup"
+              width="28"
+              height="28"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path
+                d="M7 10h22l-2 16a3 3 0 01-3 2.5H12A3 3 0 019 26L7 10z"
+                fill="#fbbf24"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+              />
+              <path
+                d="M27 14h3a3 3 0 010 6h-3"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <svg
+              class="deco-cup"
+              width="22"
+              height="22"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path
+                d="M7 10h22l-2 16a3 3 0 01-3 2.5H12A3 3 0 019 26L7 10z"
+                fill="#fbbf24"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+              />
+              <path
+                d="M27 14h3a3 3 0 010 6h-3"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <svg
+              class="deco-cup"
+              width="16"
+              height="16"
+              viewBox="0 0 36 36"
+              fill="none"
+            >
+              <path
+                d="M7 10h22l-2 16a3 3 0 01-3 2.5H12A3 3 0 019 26L7 10z"
+                fill="#fbbf24"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+              />
+              <path
+                d="M27 14h3a3 3 0 010 6h-3"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
           </div>
         </div>
+
+        <!-- ── RIGHT: Auth Card ── -->
+        <div class="auth-card">
+          <!-- Logo -->
+          <div class="chai-logo">
+            <svg
+              class="chai-cup"
+              viewBox="0 0 36 36"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7 10h22l-2 16a3 3 0 01-3 2.5H12A3 3 0 019 26L7 10z"
+                fill="rgba(251,191,36,0.15)"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+              />
+              <path
+                d="M27 14h3a3 3 0 010 6h-3"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M11 7c0 0 2-2 5 0s5 0 5 0"
+                stroke="#f59e0b"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                opacity="0.6"
+              />
+              <path
+                d="M14 29.5h8"
+                stroke="#fbbf24"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span class="logo-text">Cinema Chai</span>
+          </div>
+
+          <!-- Now showing pill -->
+          <div class="now-showing">
+            Now Showing &nbsp;·&nbsp; <strong>Dhurandhar The Revenge</strong>
+          </div>
+
+          <!-- Tabs -->
+          <div class="auth-tabs">
+            <button
+              class="tab-btn active"
+              id="tab-login"
+              onclick="switchTab('login')"
+            >
+              Sign In
+            </button>
+            <button
+              class="tab-btn"
+              id="tab-register"
+              onclick="switchTab('register')"
+            >
+              Register
+            </button>
+          </div>
+
+          <!-- Login Form -->
+          <div id="form-login">
+            <div class="form-group">
+              <label class="form-label">Username</label>
+              <input
+                class="form-input"
+                id="login-user"
+                type="text"
+                placeholder="Enter your username"
+                autocomplete="username"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <input
+                class="form-input"
+                id="login-pass"
+                type="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+              />
+              <p class="form-error" id="login-error">
+                Invalid username or password.
+              </p>
+            </div>
+            <button class="auth-btn" onclick="handleLogin()">
+              Continue to Seats →
+            </button>
+
+            <div class="divider">or</div>
+            <button class="ghost-btn" onclick="handleGuest()">
+              Continue as Guest
+            </button>
+          </div>
+
+          <!-- Register Form -->
+          <div id="form-register" style="display: none">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input
+                class="form-input"
+                id="reg-name"
+                type="text"
+                placeholder="What should we call you?"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Username</label>
+              <input
+                class="form-input"
+                id="reg-user"
+                type="text"
+                placeholder="Choose a username"
+              />
+              <p class="form-error" id="reg-user-error">
+                Username already taken.
+              </p>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <input
+                class="form-input"
+                id="reg-pass"
+                type="password"
+                placeholder="Create a password"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm Password</label>
+              <input
+                class="form-input"
+                id="reg-pass2"
+                type="password"
+                placeholder="Repeat password"
+              />
+              <p class="form-error" id="reg-pass-error">
+                Passwords do not match.
+              </p>
+            </div>
+            <button class="auth-btn" onclick="handleRegister()">
+              Create Account →
+            </button>
+          </div>
+
+          <!-- Footer note -->
+          <p
+            style="
+              text-align: center;
+              font-size: 0.75rem;
+              color: #334155;
+              margin-top: 1.5rem;
+              margin-bottom: 0;
+            "
+          >
+            Cinema Chai&copy; 2025 &nbsp;·&nbsp; ChaiCode
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!--  BOOKING SCREEN                                    -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <div id="booking-screen">
+      <!-- Top bar -->
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+            <path
+              d="M7 10h22l-2 16a3 3 0 01-3 2.5H12A3 3 0 019 26L7 10z"
+              fill="rgba(251,191,36,0.15)"
+              stroke="#fbbf24"
+              stroke-width="1.5"
+            />
+            <path
+              d="M27 14h3a3 3 0 010 6h-3"
+              stroke="#fbbf24"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span style="font-weight: 600; font-size: 0.95rem; color: #fbbf24"
+            >Cinema Chai</span
+          >
+        </div>
+        <div class="user-badge">
+          <div class="user-avatar" id="user-avatar">?</div>
+          <span id="user-greeting">Guest</span>
+        </div>
+        <button class="logout-btn" onclick="handleLogout()">Sign Out</button>
       </div>
 
-      <div class="flex justify-center">
-        <div
-          class="bg-slate-900/40 p-8 rounded-2xl border border-slate-700/50 shadow-inner"
-        >
+      <!-- Main card -->
+      <div class="booking-card">
+        <div class="booking-title">Choose Your Seat</div>
+        <div class="movie-title">Dhurandhar The Revenge</div>
+        <div class="movie-subtitle">Jassi ko ghar ki yaad kyu nhi aai?</div>
+
+        <div class="legend">
+          <div class="legend-item">
+            <div class="legend-dot dot-available"></div>
+            <span>Available</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot dot-booked"></div>
+            <span>Booked</span>
+          </div>
+        </div>
+
+        <div class="screen-bar"></div>
+
+        <div style="overflow-x: auto">
           <table
             id="tbl"
-            class="border-separate border-spacing-4 mx-auto"
+            style="
+              border-collapse: separate;
+              border-spacing: 10px;
+              margin: 0 auto;
+            "
           ></table>
         </div>
       </div>
     </div>
 
     <script>
+      /* ─── SIMPLE LOCAL AUTH STORE ───────────────────── */
+      let users = JSON.parse(localStorage.getItem("cc_users") || "[]");
+      let currentUser = null;
+
+      function saveUsers() {
+        localStorage.setItem("cc_users", JSON.stringify(users));
+      }
+
+      /* ─── TAB SWITCH ─────────────────────────────────── */
+      function switchTab(tab) {
+        document.getElementById("form-login").style.display =
+          tab === "login" ? "" : "none";
+        document.getElementById("form-register").style.display =
+          tab === "register" ? "" : "none";
+        document
+          .getElementById("tab-login")
+          .classList.toggle("active", tab === "login");
+        document
+          .getElementById("tab-register")
+          .classList.toggle("active", tab === "register");
+        document.getElementById("login-error").classList.remove("show");
+        document.getElementById("reg-user-error").classList.remove("show");
+        document.getElementById("reg-pass-error").classList.remove("show");
+      }
+
+      /* ─── LOGIN ──────────────────────────────────────── */
+      function handleLogin() {
+        const uname = document.getElementById("login-user").value.trim();
+        const pass = document.getElementById("login-pass").value;
+        const found = users.find(
+          (u) => u.username === uname && u.password === pass,
+        );
+        if (!found) {
+          document.getElementById("login-error").classList.add("show");
+          return;
+        }
+        document.getElementById("login-error").classList.remove("show");
+        enterBooking(found.name || found.username);
+      }
+
+      /* ─── REGISTER ───────────────────────────────────── */
+      function handleRegister() {
+        const name = document.getElementById("reg-name").value.trim();
+        const uname = document.getElementById("reg-user").value.trim();
+        const pass = document.getElementById("reg-pass").value;
+        const pass2 = document.getElementById("reg-pass2").value;
+
+        document.getElementById("reg-user-error").classList.remove("show");
+        document.getElementById("reg-pass-error").classList.remove("show");
+
+        if (users.find((u) => u.username === uname)) {
+          document.getElementById("reg-user-error").classList.add("show");
+          return;
+        }
+        if (pass !== pass2 || pass.length < 1) {
+          document.getElementById("reg-pass-error").classList.add("show");
+          return;
+        }
+
+        const newUser = {
+          name: name || uname,
+          username: uname,
+          password: pass,
+        };
+        users.push(newUser);
+        saveUsers();
+        enterBooking(newUser.name);
+      }
+
+      /* ─── GUEST ──────────────────────────────────────── */
+      function handleGuest() {
+        enterBooking("Guest");
+      }
+
+      /* ─── TRANSITION TO BOOKING ──────────────────────── */
+      function enterBooking(name) {
+        currentUser = name;
+        document.getElementById("user-greeting").textContent = name;
+        document.getElementById("user-avatar").textContent = name
+          .charAt(0)
+          .toUpperCase();
+        document.getElementById("auth-screen").style.display = "none";
+        document.getElementById("booking-screen").style.display = "block";
+        run();
+      }
+
+      /* ─── LOGOUT ─────────────────────────────────────── */
+      function handleLogout() {
+        currentUser = null;
+        document.getElementById("tbl").innerHTML = "";
+        document.getElementById("auth-screen").style.display = "flex";
+        document.getElementById("booking-screen").style.display = "none";
+        document.getElementById("login-user").value = "";
+        document.getElementById("login-pass").value = "";
+        switchTab("login");
+      }
+
+      /* ─── SEAT GRID (original logic, restyled) ───────── */
       async function run() {
         const tbl = document.getElementById("tbl");
+        tbl.innerHTML = "";
+
         const res = await fetch("/seats");
         const resarray = await res.json();
         const j = resarray.sort((a, b) => a.id - b.id);
+
         let tr;
         for (let i = 0; i < j.length; i++) {
           if (i % 8 === 0) tr = document.createElement("tr");
 
           const td = document.createElement("td");
 
-          // Base aesthetic classes - added 'relative group' for tooltip positioning
-          const baseClasses =
-            "w-32 h-32 rounded-2xl text-center align-middle text-2xl font-bold transition-all duration-300 select-none relative group";
+          const base =
+            "w-14 h-14 rounded-xl text-center align-middle text-base font-bold transition-all duration-300 select-none relative group";
 
           if (j[i].isbooked) {
-            td.className = `${baseClasses} bg-rose-500/10 text-rose-500/60 border border-rose-500/20 cursor-not-allowed`;
+            td.className = `${base} cursor-not-allowed`;
+            td.style.cssText = `
+              background: rgba(239,68,68,0.07);
+              border: 1px solid rgba(239,68,68,0.2);
+              color: rgba(239,68,68,0.45);
+              width: 52px; height: 52px;
+              font-size: 0.8rem;
+            `;
             td.innerHTML = `
-                    <span class="relative z-10">${j[i].id}</span>
-                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                        Booked by: <span class="font-bold text-white ml-1">${j[i].name}</span>
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-[6px] border-transparent border-t-slate-700"></div>
-                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] border-[5px] border-transparent border-t-slate-900"></div>
-                    </div>
-                `;
+              <span>${j[i].id}</span>
+              <div style="
+                position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%);
+                padding:6px 12px; background:#0f172a; border:1px solid rgba(251,191,36,0.2);
+                font-size:0.75rem; color:#94a3b8; border-radius:8px;
+                opacity:0; pointer-events:none; white-space:nowrap; z-index:50;
+                transition:opacity 0.2s; font-weight:400;
+              " class="seat-tip">
+                Booked by <strong style="color:#fbbf24;">${j[i].name}</strong>
+              </div>
+            `;
+            td.addEventListener(
+              "mouseenter",
+              () => (td.querySelector(".seat-tip").style.opacity = "1"),
+            );
+            td.addEventListener(
+              "mouseleave",
+              () => (td.querySelector(".seat-tip").style.opacity = "0"),
+            );
           } else {
-            td.className = `${baseClasses} bg-emerald-500 text-white border-2 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] cursor-pointer hover:bg-emerald-400 hover:-translate-y-1.5 hover:shadow-[0_10px_25px_rgba(16,185,129,0.5)] active:scale-95 active:shadow-[0_0_10px_rgba(16,185,129,0.3)]`;
-            td.innerHTML = `<span class="relative z-10">${j[i].id}</span>`;
+            td.style.cssText = `
+              background: rgba(251,191,36,0.12);
+              border: 1px solid rgba(251,191,36,0.35);
+              color: #fbbf24;
+              width: 52px; height: 52px;
+              font-size: 0.8rem; cursor: pointer;
+              border-radius: 10px;
+              transition: all 0.2s;
+              vertical-align: middle; text-align: center;
+              font-weight: 700; font-family: Outfit, sans-serif;
+            `;
+            td.textContent = j[i].id;
+            td.addEventListener("mouseenter", () => {
+              td.style.background = "rgba(251,191,36,0.25)";
+              td.style.borderColor = "rgba(251,191,36,0.7)";
+              td.style.transform = "translateY(-3px)";
+              td.style.boxShadow = "0 8px 20px rgba(251,191,36,0.2)";
+            });
+            td.addEventListener("mouseleave", () => {
+              td.style.background = "rgba(251,191,36,0.12)";
+              td.style.borderColor = "rgba(251,191,36,0.35)";
+              td.style.transform = "";
+              td.style.boxShadow = "";
+            });
           }
 
           td.addEventListener("click", async function (e) {
             const currentTd = e.currentTarget;
-            if (currentTd.classList.contains("cursor-not-allowed")) {
-              return; // Seat is already taken
-            }
+            if (currentTd.style.cursor === "not-allowed") return;
 
             try {
-              const id = j[i].id; // Safe from loop closure
-              const name = prompt("Enter your name");
+              const id = j[i].id;
+              let name =
+                currentUser === "Guest"
+                  ? prompt("Enter your name for booking:")
+                  : currentUser;
               if (!name) return;
 
               const res = await fetch(`/${id}/${name}`, { method: "PUT" });
               const data = await res.json();
 
               if (data.error) {
-                alert("FAILED! Couldn't book! already booked.");
+                alert("Couldn't book – seat already taken!");
               } else {
-                alert("Booked successfully!");
-                // Visually transition to booked state upon success
-                currentTd.className = `${baseClasses} bg-rose-500/10 text-rose-500/60 border border-rose-500/20 cursor-not-allowed`;
-                currentTd.innerHTML = `
-                            <span class="relative z-10">${id}</span>
-                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-4 py-2 bg-slate-900 border border-slate-700 text-sm text-slate-300 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap shadow-2xl z-50 pointer-events-none font-normal shadow-[0_10px_25px_rgba(0,0,0,0.5)]">
-                                Booked by: <span class="font-bold text-white ml-1">${name}</span>
-                                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[1px] border-[6px] border-transparent border-t-slate-700"></div>
-                                <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] border-[5px] border-transparent border-t-slate-900"></div>
-                            </div>
-                        `;
+                alert(`Seat ${id} booked for ${name}! Enjoy the movie 🎬`);
+                currentTd.style.cssText = `
+                  background: rgba(239,68,68,0.07);
+                  border: 1px solid rgba(239,68,68,0.2);
+                  color: rgba(239,68,68,0.45);
+                  width: 52px; height: 52px;
+                  font-size: 0.8rem; cursor: not-allowed;
+                  border-radius: 10px; text-align: center;
+                  vertical-align: middle; font-weight: 700;
+                  font-family: Outfit, sans-serif; position: relative;
+                `;
+                currentTd.textContent = id;
               }
             } catch (ex) {
-              alert("error booking " + ex);
+              alert("Error booking: " + ex);
             }
           });
+
           tr.appendChild(td);
           tbl.appendChild(tr);
         }
       }
-      run();
     </script>
   </body>
 </html>
